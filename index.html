@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chúc cậu ngủ ngon :3 </title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Sao li ti */
+    .star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.2; }
+      to   { opacity: 1; }
+    }
+
+    /* Chữ rơi */
+    .falling {
+      position: absolute;
+      top: -100px;
+      font-size: 60px;
+      font-weight: bold;
+      white-space: nowrap;
+      user-select: none;
+      color: #fff;
+      animation: fall linear forwards, flicker 1.5s infinite alternate, colorPulse 2s infinite alternate;
+      text-shadow: 0 0 8px #ff66ff, 0 0 16px #ff33cc, 0 0 24px #ff0099, 0 0 40px #ff66ff;
+    }
+
+    /* chữ đổi giữa trắng và hồng */
+    @keyframes colorPulse {
+      0%   { color: #fff; text-shadow: 0 0 8px #fff, 0 0 16px #ffccff, 0 0 24px #fff; }
+      100% { color: #ff99ff; text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff00aa, 0 0 30px #ff66ff; }
+    }
+
+    /* nhấp nháy nhẹ */
+    @keyframes flicker {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 1;
+      }
+    }
+
+    /* Tim */
+    .heart {
+      position: absolute;
+      top: -50px;
+      color: #ff1a1a;
+      text-shadow: 0 0 6px #ff3333, 0 0 12px #ff0000, 0 0 20px #ff3333;
+      animation: fall linear forwards, flicker 2s infinite alternate;
+    }
+  </style>
+</head>
+<body>
+    <!-- Nhạc tự động -->
+    <audio id="sound" autoplay loop>
+      <source src="style/tiktok.mp3" type="audio/mpeg" />
+    </audio>
+
+<script>
+  // tạo sao nền
+  function createStars() {
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.left = Math.random() * window.innerWidth + "px";
+      star.style.top = Math.random() * window.innerHeight + "px";
+      star.style.animationDuration = (1 + Math.random() * 3) + "s";
+      document.body.appendChild(star);
+    }
+  }
+
+  // tạo chữ/tim rơi
+  function createFallingItem() {
+    const el = document.createElement("div");
+
+    if (Math.random() > 0.3) {
+      el.classList.add("falling");
+      el.innerText = "Chúc cậu ngủ ngon :3";
+    } else {
+      el.classList.add("heart");
+      el.innerText = "💗";
+      el.style.fontSize = (20 + Math.random() * 40) + "px";
+    }
+
+    el.style.left = Math.random() * window.innerWidth + "px";
+    el.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+    document.body.appendChild(el);
+
+    el.addEventListener("animationend", () => {
+      el.remove();
+    });
+  }
+
+  createStars();
+  setInterval(createFallingItem, 200);
+
+  // fix autoplay bị chặn: bỏ mute khi user click
+  const audio = document.getElementById("sound");
+  audio.muted = true; // ban đầu mute để cho phép autoplay
+  audio.play().catch(err => console.log("Autoplay bị chặn:", err));
+
+  document.body.addEventListener("click", () => {
+    audio.muted = false;
+    audio.play();
+  }, { once: true });
+</script>
+</body>
+</html>
