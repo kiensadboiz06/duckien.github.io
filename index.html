@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -10,6 +11,30 @@
       background: black;
       height: 100vh;
       font-family: Arial, sans-serif;
+    }
+
+    /* Nút nhạc */
+    #musicBtn {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff66ff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+      text-shadow: 0 0 6px #fff, 0 0 12px #ff33cc;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 8px #ff99ff, 0 0 20px #ff33cc; }
+      100% { box-shadow: 0 0 20px #ff33cc, 0 0 40px #ff66ff; }
     }
 
     /* Sao li ti */
@@ -41,13 +66,11 @@
       text-shadow: 0 0 8px #ff66ff, 0 0 16px #ff33cc, 0 0 24px #ff0099, 0 0 40px #ff66ff;
     }
 
-    /* chữ đổi giữa trắng và hồng */
     @keyframes colorPulse {
       0%   { color: #fff; text-shadow: 0 0 8px #fff, 0 0 16px #ffccff, 0 0 24px #fff; }
       100% { color: #ff99ff; text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff00aa, 0 0 30px #ff66ff; }
     }
 
-    /* nhấp nháy nhẹ */
     @keyframes flicker {
       0% { opacity: 0.7; }
       50% { opacity: 1; }
@@ -69,11 +92,22 @@
       text-shadow: 0 0 6px #ff3333, 0 0 12px #ff0000, 0 0 20px #ff3333;
       animation: fall linear forwards, flicker 2s infinite alternate;
     }
+
+    /* Ảnh gấu */
+    .bear {
+      position: absolute;
+      top: -100px;
+      animation: fall linear forwards;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
-    <!-- Nhạc tự động -->
-    <audio id="sound" autoplay loop>
+    <!-- Nút phát nhạc -->
+    <button id="musicBtn">🎵 Click vào đây để nghe nhạc nha 🎵</button>
+
+    <!-- Nhạc -->
+    <audio id="sound" loop>
       <source src="style/tiktok.mp3" type="audio/mpeg" />
     </audio>
 
@@ -90,13 +124,21 @@
     }
   }
 
-  // tạo chữ/tim rơi
+  // tạo chữ/tim/ảnh gấu rơi
   function createFallingItem() {
     const el = document.createElement("div");
+    let rand = Math.random();
 
-    if (Math.random() > 0.3) {
+    if (rand < 0.6) {
       el.classList.add("falling");
       el.innerText = "Chúc cậu ngủ ngon :3";
+    } else if (rand < 0.9) {
+      const img = document.createElement("img");
+      img.src = "style/gau" + (1 + Math.floor(Math.random() * 4)) + ".jpeg"; 
+      img.style.width = "100px";
+      img.style.height = "100px";
+      el.classList.add("bear");
+      el.appendChild(img);
     } else {
       el.classList.add("heart");
       el.innerText = "💗";
@@ -116,15 +158,14 @@
   createStars();
   setInterval(createFallingItem, 200);
 
-  // fix autoplay bị chặn: bỏ mute khi user click
+  // điều khiển nhạc
   const audio = document.getElementById("sound");
-  audio.muted = true; // ban đầu mute để cho phép autoplay
-  audio.play().catch(err => console.log("Autoplay bị chặn:", err));
+  const btn = document.getElementById("musicBtn");
 
-  document.body.addEventListener("click", () => {
-    audio.muted = false;
+  btn.addEventListener("click", () => {
     audio.play();
-  }, { once: true });
+    btn.style.display = "none"; // ẩn nút sau khi bấm
+  });
 </script>
 </body>
 </html>
