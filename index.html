@@ -3,7 +3,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Chúc cậu ngủ ngon :3 </title>
+  <title>Love Animation</title>
   <style>
     body {
       margin: 0;
@@ -57,7 +57,7 @@
     .falling {
       position: absolute;
       top: -100px;
-      font-size: 60px;
+      font-size: 80px;
       font-weight: bold;
       white-space: nowrap;
       user-select: none;
@@ -124,6 +124,14 @@
     }
   }
 
+  // danh sách câu chữ rơi
+  const messages = [
+    "I love you",
+    "I love you so much",
+    "Chụt yêu",
+    "Yêu em nhất thế giới"
+  ];
+
   // tạo chữ/tim/ảnh gấu rơi
   function createFallingItem() {
     const el = document.createElement("div");
@@ -131,18 +139,19 @@
 
     if (rand < 0.6) {
       el.classList.add("falling");
-      el.innerText = "Chúc cậu ngủ ngon :3";
+      el.innerText = messages[Math.floor(Math.random() * messages.length)];
     } else if (rand < 0.9) {
       const img = document.createElement("img");
       img.src = "style/gau" + (1 + Math.floor(Math.random() * 4)) + ".jpeg"; 
-      img.style.width = "100px";
-      img.style.height = "100px";
+      img.style.width = "150px";
+      img.style.height = "150px";
       el.classList.add("bear");
       el.appendChild(img);
     } else {
       el.classList.add("heart");
       el.innerText = "💗";
-      el.style.fontSize = (20 + Math.random() * 40) + "px";
+      el.innerText = "🩵";
+      el.style.fontSize = (30 + Math.random() * 60) + "px";
     }
 
     el.style.left = Math.random() * window.innerWidth + "px";
